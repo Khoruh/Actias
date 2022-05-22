@@ -10,3 +10,7 @@ This pushes Slash commands to Discord, making them visible and "functional", at 
 # config.json
 Contains alot of the relevent stuff for actually making sure Slash commands actually get pushed to Discord.  
 The only unused thing in there is "prefix", this is just leftover from v12, however if you want to make a command or response through messageCreate, preferably check that it starts with this.
+# Commands folder
+Contains the individual files for each command. Just a little nicer than if else right?
+# Logs folder
+Contains seperate files for moderation logging purposes in Discord. (ex. Deleted/edited messages, edited roles etc.)
