@@ -22,7 +22,7 @@ client.on('ready', () => {
     console.log(`${client.user.username} is ready to go!`);
 });
 client.on("interactionCreate", async interaction => {
-//Selct Menu Handling
+//Select Menu Handling
   if(interaction.isSelectMenu()) {
 
 }
@@ -30,7 +30,9 @@ client.on("interactionCreate", async interaction => {
  else if(interaction.isModalSubmit()) {
    //Echo Modal
    if(interaction.customId === "echoModal") {
+     //Get Modal Input
      var echoMessage = interaction.fields.getTextInputValue("echoInput")
+     //Replying Here Makes The Modal Close Itself Without Throwing An Error.
      interaction.reply({
        content: "Echoing Message...",
        ephemeral: true
