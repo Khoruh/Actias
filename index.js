@@ -5,14 +5,22 @@ const config = require('C:/Actias/configFiles/config.json');
 const client = new Discord.Client({
   intents: new Discord.Intents(32767)
 });
+//Command stuff, gonna be honest, hardly know how this works.
 client.commands = new Discord.Collection();
 const commandsPath = './commands'
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
-for (const file of commandFiles) {
-	const filePath = (`${commandsPath}/${file}`);
-	const command = require(filePath);
+for (var file of commandFiles) {
+	var filePath = (`${commandsPath}/${file}`);
+	var command = require(filePath);
 	client.commands.set(command.data.name, command);
+}
+client.logs = new Discord.Collection();
+const logsPath = './logs'
+const logFiles = fs.readdirSync(logsPath).filter(file => file.endsWith('.js'))
+for (var file of logFiles) {
+  var filePath = (`${logsPath}/${file}`)
+  var log = require(filePath)
 }
 //Wait For Ready
 client.on('ready', () => {
@@ -55,7 +63,7 @@ client.on("interactionCreate", async interaction => {
 }
 //Slash Command Handling
  else if(interaction.isCommand()) {
-    const command = client.commands.get(interaction.commandName);
+    var command = client.commands.get(interaction.commandName);
   
     if (!command) return;
   
@@ -67,6 +75,13 @@ client.on("interactionCreate", async interaction => {
     }
   };
 })
-//Wait For Command Input.
+//Moderation Logs
+client.on("messageDelete", async message => {
+ try {
+   await log.execute(message)
+ } catch (error) {
+   console.log(error)
+ }
+})
 
 client.login(config.token);
