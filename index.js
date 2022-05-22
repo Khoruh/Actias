@@ -28,6 +28,17 @@ client.on("interactionCreate", async interaction => {
 }
 //Modal Handling 
  else if(interaction.isModalSubmit()) {
+   //Echo Modal
+   if(interaction.customId === "echoModal") {
+     var echoMessage = interaction.fields.getTextInputValue("echoInput")
+     interaction.reply({
+       content: "Echoing Message...",
+       ephemeral: true
+     }).then(() => { 
+       interaction.channel.send(echoMessage)
+     })
+
+   }
 
 }
 //Button Handling
