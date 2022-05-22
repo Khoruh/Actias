@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('node:path');
 const Discord = require('discord.js');
-const config = require('C:/Actias/configFiles/config.json');
+const config = require('./configFiles/config.json');
 const client = new Discord.Client({
   intents: new Discord.Intents(32767)
 });
