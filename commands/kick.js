@@ -22,8 +22,10 @@ module.exports = {
         .setDescription("The reason for kicking this member")
         ),
         async execute(interaction) {
-            var modlog = interaction.guild.channels.cache.get(c => c.name = "mod-log")
-            var kickMember = interaction.options.getUser("member")
+            var modlog = interaction.guild.channels.cache.find(c => c.name === "mod-log")
+            console.log(modlog.name)
+            var kickUser = interaction.options.getUser("member")
+            var kickMember = interaction.guild.members.cache.get(kickUser.id)
             var kickReason = interaction.options.getString("reason")
             if(!kickReason) {
                 var kickReason = "No Reason Given"
