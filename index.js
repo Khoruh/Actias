@@ -22,6 +22,15 @@ for (var file of logFiles) {
   var filePath = (`${logsPath}/${file}`)
   var log = require(filePath)
 }
+client.contextMenus = new Discord.Collection();
+const contextPath = './contextMenus'
+const contextFiles = fs.readdirSync(contextPath).filter(file => file.endsWith('.js'));
+
+for (var file of contextFiles) {
+	var filePath = (`${contextPath}/${file}`);
+	var contextMenu = require(filePath);
+  client.commands.set(contextMenu.data.name, contextMenu)
+}
 //Wait For Ready
 client.on('ready', () => {
   
@@ -54,7 +63,14 @@ client.on("interactionCreate", async interaction => {
   
 }
 //Context Menu Handling
- else if(interaction.isContextMenu()) {
+ else if(interaction.isContextMenu()) { 
+  var contextMenuGet = client.contextMenus.get(interaction.commandName);
+    try {
+      await contextMenu.execute(interaction);
+    } catch (error) {
+      console.error(error);
+      await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+    }
 
 }
 //User Context Menu Handling
