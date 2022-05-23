@@ -29,7 +29,7 @@ const contextFiles = fs.readdirSync(contextPath).filter(file => file.endsWith('.
 for (var file of contextFiles) {
 	var filePath = (`${contextPath}/${file}`);
 	var contextMenu = require(filePath);
-  client.commands.set(contextMenu.data.name, contextMenu)
+  client.contextMenus.set(contextMenu.data.name, contextMenu)
 }
 //Wait For Ready
 client.on('ready', () => {
@@ -64,7 +64,9 @@ client.on("interactionCreate", async interaction => {
 }
 //Context Menu Handling
  else if(interaction.isContextMenu()) { 
-  var contextMenuGet = client.contextMenus.get(interaction.commandName);
+  var contextMenu = client.contextMenus.get(interaction.commandName);
+
+  if(!contextMenu) return;
     try {
       await contextMenu.execute(interaction);
     } catch (error) {
