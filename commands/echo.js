@@ -7,7 +7,7 @@ module.exports = {
 	async execute(interaction) {
 		//Create Echo Modal
 		const echoModal = new Discord.Modal()
-		.setCustomId('echoModal')
+		.setCustomId('echo')
 		.setTitle("What do you want to echo?")
 		//Create Input Field
 		const echoMessage = new Discord.TextInputComponent()
@@ -19,5 +19,18 @@ module.exports = {
 		//Add Action Row To Modal
 		echoModal.addComponents(echoInput)
 		await interaction.showModal(echoModal)
+		interaction.client.on("interactionCreate", interaction => {
+			if(interaction.isModalSubmit()) {
+				var echoMessage = interaction.fields.getTextInputValue("echoInput")
+				interaction.reply({
+					content: `Echoing: ${echoMessage}`,
+					ephemeral: true
+				})
+				interaction.channel.send({
+					content: `${echoMessage}`,
+				})
+			}
+
+		})
 	},
 };

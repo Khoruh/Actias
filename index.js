@@ -15,6 +15,7 @@ for (var file of commandFiles) {
 	var command = require(filePath);
 	client.commands.set(command.data.name, command);
 }
+//Logs handling
 client.logs = new Discord.Collection();
 const logsPath = './logs'
 const logFiles = fs.readdirSync(logsPath).filter(file => file.endsWith('.js'))
@@ -22,6 +23,7 @@ for (var file of logFiles) {
   var filePath = (`${logsPath}/${file}`)
   var log = require(filePath)
 }
+//Context Menus
 client.contextMenus = new Discord.Collection();
 const contextPath = './contextMenus'
 const contextFiles = fs.readdirSync(contextPath).filter(file => file.endsWith('.js'));
@@ -31,6 +33,7 @@ for (var file of contextFiles) {
 	var contextMenu = require(filePath);
   client.contextMenus.set(contextMenu.data.name, contextMenu)
 }
+//Modals
 //Wait For Ready
 client.on('ready', () => {
   
@@ -42,22 +45,6 @@ client.on("interactionCreate", async interaction => {
 
 }
 //Modal Handling 
- else if(interaction.isModalSubmit()) {
-   //Echo Modal
-   if(interaction.customId === "echoModal") {
-     //Get Modal Input
-     var echoMessage = interaction.fields.getTextInputValue("echoInput")
-     //Replying Here Makes The Modal Close Itself Without Throwing An Error.
-     interaction.reply({
-       content: "Echoing Message...",
-       ephemeral: true
-     }).then(() => { 
-       interaction.channel.send(echoMessage)
-     })
-
-   }
-
-}
 //Button Handling
  else if(interaction.isButton()) {
   
@@ -95,6 +82,7 @@ client.on("interactionCreate", async interaction => {
 })
 //Moderation Logs
 client.on("messageDelete", async message => {
+  var log = client.logs.get("messageDelete.js");
  try {
    await log.execute(message)
  } catch (error) {
