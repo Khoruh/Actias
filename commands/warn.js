@@ -41,7 +41,14 @@ module.exports = {
                 //Get Modal input for warn reason
                 var wReason = interaction.fields.getTextInputValue("wReason")
 //Specific warns folder
-var warnsFolder = `./userWarns/${guildID}`
+var guildFolder = `./guildConfig/${guildID}`
+//Check if it exists, if not, create it
+if(fs.existsSync(guildFolder) === false) {
+    fs.mkdirSync(guildFolder, {
+		recursive: true
+	});
+}
+var warnsFolder = `${guildFolder}/userWarns`
 //Check if it exists, if not, create it
 if(fs.existsSync(warnsFolder) === false) {
     fs.mkdirSync(warnsFolder, {
