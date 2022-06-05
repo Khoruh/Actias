@@ -12,6 +12,7 @@ module.exports = {
             .setRequired(true),
             ),
              async execute(interaction) {
+                 //if(!interaction.member.permissions.has("KICK_USER")) return
                 //Get selected user
                  warnedUser = interaction.options.getUser("member")
                  //Get user Id, mainly for creation of warns file
@@ -41,7 +42,8 @@ module.exports = {
                 //Get Modal input for warn reason
                 var wReason = interaction.fields.getTextInputValue("wReason")
 //Specific warns folder
-var guildFolder = `./guildConfig/${guildID}`
+var guildID = interaction.guild.id
+var guildFolder = `./guildConfig/${guildID}/`
 //Check if it exists, if not, create it
 if(fs.existsSync(guildFolder) === false) {
     fs.mkdirSync(guildFolder, {

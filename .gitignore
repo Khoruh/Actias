@@ -1,2 +1,7 @@
 start.bat
 .gitignore
+guildConfig/
+node_modules/
+configFiles/
+valorantUsers/
+ffmpeg.exe

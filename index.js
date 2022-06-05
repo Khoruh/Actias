@@ -2,9 +2,17 @@ const fs = require('fs');
 const path = require('node:path');
 const Discord = require('discord.js');
 const config = require('./configFiles/config.json');
-const client = new Discord.Client({
+
+const { DiscordTogether } = require('discord-together');
+
+global.client = new Discord.Client({
   intents: new Discord.Intents(32767)
 });
+
+client.discordTogether = new DiscordTogether(client);
+
+const { Player } = require("discord-player");
+global.player = new Player(client)
 //Command stuff, gonna be honest, hardly know how this works.
 client.commands = new Discord.Collection();
 const commandsPath = './commands'
@@ -22,6 +30,7 @@ const logFiles = fs.readdirSync(logsPath).filter(file => file.endsWith('.js'))
 for (var file of logFiles) {
   var filePath = (`${logsPath}/${file}`)
   var log = require(filePath)
+  client.logs.set(log.name, log)
 }
 //Context Menus
 client.contextMenus = new Discord.Collection();
@@ -36,8 +45,8 @@ for (var file of contextFiles) {
 //Modals
 //Wait For Ready
 client.on('ready', () => {
-  
     console.log(`${client.user.username} is ready to go!`);
+    
 });
 client.on("interactionCreate", async interaction => {
 //Select Menu Handling
@@ -82,7 +91,8 @@ client.on("interactionCreate", async interaction => {
 })
 //Moderation Logs
 client.on("messageDelete", async message => {
-  var log = client.logs.get("messageDelete.js");
+  console.log(client.logs)
+  var log = client.logs.get("messageDelete");
  try {
    await log.execute(message)
  } catch (error) {
@@ -90,4 +100,41 @@ client.on("messageDelete", async message => {
  }
 })
 
+client.on("messageCreate", async message => {
+  if (message.content === `!start`) {
+    if(message.member.voice.channel) {
+      client.discordTogether.createTogetherCode(message.member.voice.channel.id, 'youtube').then(async invite => {
+        return message.channel.send(`${invite.code}`);
+        });
+    };
+};
+})
+client.on("messageCreate", async message => {
+  if (message.content === `!start2`) {
+    if(message.member.voice.channel) {
+      client.discordTogether.createTogetherCode(message.member.voice.channel.id, 'doodlecrew').then(async invite => {
+        return message.channel.send(`${invite.code}`);
+    });
+    };
+};
+})
+client.on('messageCreate', async message => {
+  if (message.content === '!start3') {
+      if(message.member.voice.channel) {
+          client.discordTogether.createTogetherCode(message.member.voice.channel.id, 'sketchheads').then(async invite => {
+              return message.channel.send(`${invite.code}`);
+          });
+      };
+  };
+});
+player.on("trackStart", (queue, track) => {
+  const playEmbed = new Discord.MessageEmbed({
+    color: 3447003,
+    title: `Now Playing ${track.title}`,
+    timestamp: new Date(),
+})
+  queue.metadata.channel.send({
+    embeds: [playEmbed]
+  })
+})
 client.login(config.token);

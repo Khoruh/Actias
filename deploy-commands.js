@@ -1,7 +1,7 @@
 const { REST } = require('@discordjs/rest');
 const fs = require('node:fs');
 const { Routes } = require('discord-api-types/v10');
-const { clientId, testServerId, RoseGardenId, token } = require('./configFiles/config.json');
+const { clientId, testServerId, RoseGardenId, token, GoonServer } = require('./configFiles/config.json');
 const commands = []
 const commandsPath = './commands';
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
@@ -30,3 +30,7 @@ rest.put(
 	rest.put(Routes.applicationGuildCommands(clientId, RoseGardenId), { body: pushCommands })
 	.then(() => console.log('Successfully registered application to The Rose Garden.'))
 	.catch(console.error);
+	rest.put(
+		Routes.applicationGuildCommands(clientId, GoonServer), { body: pushCommands })
+		.then(() => console.log('Successfully registered application to Testing.'))
+		.catch(console.error);
