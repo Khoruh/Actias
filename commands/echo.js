@@ -5,6 +5,7 @@ module.exports = {
 		.setName('echo')
 		.setDescription('Echos the inputted message'),
 	async execute(interaction) {
+		try {
 		//Create Echo Modal
 		const echoModal = new Discord.Modal()
 		.setCustomId('echo')
@@ -32,5 +33,8 @@ module.exports = {
 			}
 
 		})
-	},
+	} catch (err) {
+		console.log(err)
+	}
+} 
 };

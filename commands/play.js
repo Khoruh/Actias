@@ -13,6 +13,7 @@ module.exports = {
         .setRequired(true)
     ),
     async execute(interaction) {
+        try {
         const query = interaction.options.getString('query')
         const queue = player.createQueue(interaction.guild, {
             metadata: {
@@ -48,6 +49,9 @@ module.exports = {
          await interaction.followUp({ content: `Loading track **${track.title}**` });
 
             
-              },
+              } catch (err) {
+                console.log(err)
             }
+        }
+    }
     

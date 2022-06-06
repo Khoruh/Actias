@@ -8,6 +8,7 @@ module.exports = {
     .setName("now-playing")
     .setDescription("See the currently playing song"),
     async execute(interaction) {
+        try {
         const queue = player.getQueue(interaction.guild)
         if(!queue || !queue.playing) return interaction.reply({
             content: "No music is currently being played."
@@ -30,5 +31,8 @@ module.exports = {
         interaction.reply({
             embeds: [npEmbed]
         })
-    }
+    } catch (err) {
+		console.log(err)
+	}
+ }
 }

@@ -8,6 +8,7 @@ module.exports = {
 		.setName('skip')
 		.setDescription('Skip the current song'),
         async execute(interaction) {
+            try {
             const skipEmbed = new Discord.MessageEmbed({
                 color: 3447003,
                 title: `Skipping...`,
@@ -19,5 +20,8 @@ module.exports = {
                 embeds: [skipEmbed]
             })
 
+        } catch (err) {
+            console.log(err)
         }
+ }
 }
