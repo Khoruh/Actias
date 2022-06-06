@@ -48,10 +48,12 @@ client.on('ready', () => {
     console.log(`${client.user.username} is ready to go!`);
     
 });
+
 client.on("interactionCreate", async interaction => {
+
 //Select Menu Handling
   if(interaction.isSelectMenu()) {
-
+    
 }
 //Modal Handling 
 //Button Handling
