@@ -13,7 +13,7 @@ module.exports = {
       .setDescription("Set-up your VALORANT username for stats.")
       .addStringOption(name =>
         name.setName("name")
-        .setDescription("You VALORANT username")
+        .setDescription("Your VALORANT username")
         .setRequired(true))
         .addStringOption(tag =>
           tag.setName("tag")
