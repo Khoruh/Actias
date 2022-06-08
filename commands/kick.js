@@ -54,6 +54,7 @@ module.exports = {
                   ],
                     timestamp: new Date(),
                 })
+                if(!modlog || modlog === undefined) return
                 modlog.send({
                     embeds: [kickEmbed]
                 })
