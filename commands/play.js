@@ -2,6 +2,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const Discord = require("discord.js")
 const fs = require("fs")
 const { Player } = require("discord-player");
+const queue = require('./queue');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -10,7 +11,6 @@ module.exports = {
     .addStringOption(query => 
         query.setName("query")
         .setDescription("The song to search for")
-        .setRequired(true)
     ),
     async execute(interaction) {
         try {
@@ -20,6 +20,9 @@ module.exports = {
                 channel: interaction.channel
             }
         })
+        if(queue.setPaused === true) {
+            queue.play()
+        } else {
         if(!interaction.member.voice.channel) return interaction.reply({
             content: "Please join a Voice channel to play a song."
         })
@@ -48,10 +51,10 @@ module.exports = {
 
          await interaction.followUp({ content: `Loading track **${track.title}**` });
 
-            
+    }
               } catch (err) {
                 console.log(err)
-            }
+        }
         }
     }
     

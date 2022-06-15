@@ -25,7 +25,7 @@ for (var file of commandFiles) {
 }
 //Logs handling
 client.logs = new Discord.Collection();
-const logsPath = './logs'
+const logsPath = './events'
 const logFiles = fs.readdirSync(logsPath).filter(file => file.endsWith('.js'))
 for (var file of logFiles) {
   var filePath = (`${logsPath}/${file}`)
@@ -51,13 +51,10 @@ client.on('ready', () => {
 
 client.on("interactionCreate", async interaction => {
 
-//Select Menu Handling
-  if(interaction.isSelectMenu()) {
-    
-}
+
 //Modal Handling 
 //Button Handling
- else if(interaction.isButton()) {
+ if(interaction.isButton()) {
   
 }
 //Context Menu Handling
@@ -93,10 +90,17 @@ client.on("interactionCreate", async interaction => {
 })
 //Moderation Logs
 client.on("messageDelete", async message => {
-  console.log(client.logs)
   var log = client.logs.get("messageDelete");
  try {
    await log.execute(message)
+ } catch (error) {
+   console.log(error)
+ }
+})
+client.on("messageUpdate", async (oldMessage, newMessage) => {
+  var log = client.logs.get("messageEdit");
+ try {
+   await log.execute(oldMessage, newMessage)
  } catch (error) {
    console.log(error)
  }
