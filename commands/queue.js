@@ -12,8 +12,8 @@ module.exports = {
         .setDescription("The page of queue to see")
     ),
     async execute(interaction) {
-        await interaction.defer();
-        const queue = client.player.getQueue(interaction.guildID);
+        await interaction.deferReply();
+        const queue = player.getQueue(interaction.guild);
         if (!queue || !queue.playing) return void interaction.sendFollowUp({ content: '❌ | No music is being played!' });
         if (!interaction.options.page) interaction.options.page = 1;
         const pageStart = 10 * (interaction.options.page - 1);
@@ -23,7 +23,7 @@ module.exports = {
             return `${i + pageStart + 1}. **${m.title}** ([link](${m.url}))`;
         });
 
-        return void interaction.sendFollowUp({
+        return void interaction.editReply({
             embeds: [
                 {
                     title: 'Server Queue',

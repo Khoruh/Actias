@@ -15,6 +15,11 @@ module.exports = {
             timestamp: new Date(),
         })
         const queue = player.getQueue(interaction.guild)
+        if(!queue) {
+            return interaction.reply({
+                content: "There is no music currently in queue."
+            })
+        }
         queue.setPaused(true)
         interaction.reply({
             embeds: [pauseEmbed]

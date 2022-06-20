@@ -3,6 +3,8 @@ const path = require('node:path');
 const Discord = require('discord.js');
 const config = require('./configFiles/config.json');
 
+const timestamp = require('unix-timestamp');
+
 const { DiscordTogether } = require('discord-together');
 
 global.client = new Discord.Client({
@@ -12,6 +14,7 @@ global.client = new Discord.Client({
 client.discordTogether = new DiscordTogether(client);
 
 const { Player } = require("discord-player");
+const { ConsoleMessage } = require('puppeteer');
 global.player = new Player(client)
 //Command stuff, gonna be honest, hardly know how this works.
 client.commands = new Discord.Collection();
@@ -55,6 +58,15 @@ client.on("interactionCreate", async interaction => {
 //Modal Handling 
 //Button Handling
  if(interaction.isButton()) {
+   if(interaction.customId === "hammertime") {
+     interaction.reply({
+       content: "HammerTime is a form of markdown that converts a timestamp to your local timezone. Easy conversions for everyone :D",
+       ephemeral: true
+     })
+   }
+   if(interaction.customId === "delete") {
+     interaction.message.delete()
+   }
   
 }
 //Context Menu Handling
@@ -105,7 +117,15 @@ client.on("messageUpdate", async (oldMessage, newMessage) => {
    console.log(error)
  }
 })
-
+//Time conversion
+client.on("messageCreate", async message => {
+  var log = client.logs.get("conversion");
+  try {
+    await log.execute(message)
+  } catch (error) {
+    console.log(error)
+  }
+})
 client.on("messageCreate", async message => {
   if (message.content === `!start`) {
     if(message.member.voice.channel) {

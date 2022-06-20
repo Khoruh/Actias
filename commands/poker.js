@@ -11,7 +11,7 @@ module.exports = {
             content: "Please join a Voice channel to start a game of Poker."
         })
             interaction.client.discordTogether.createTogetherCode(interaction.member.voice.channel.id, 'poker').then(async invite => {
-              return interaction.channel.send(`${invite.code}`);
+              return interaction.reply(`${invite.code}`);
               });
             }
     
