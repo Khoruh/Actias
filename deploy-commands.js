@@ -3,11 +3,32 @@ const fs = require('node:fs');
 const { Routes } = require('discord-api-types/v10');
 const { clientId, testServerId, RoseGardenId, token, GoonServer } = require('./configFiles/config.json');
 const commands = []
-const commandsPath = './commands';
-const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+const miscPath = './misc'
+const miscFiles = fs.readdirSync(miscPath).filter(file => file.endsWith('.js'));
+const moderationPath = './moderation'
+const moderationFiles = fs.readdirSync(moderationPath).filter(file => file.endsWith('.js'));
+const musicPath = './music'
+const musicFiles = fs.readdirSync(musicPath).filter(file => file.endsWith('.js'));
+const generalPath = './general'
+const generalFiles = fs.readdirSync(generalPath).filter(file => file.endsWith('.js'));
 
-for (const file of commandFiles) {
-	const filePath = (`${commandsPath}/${file}`);
+for (const file of miscFiles) {
+	const filePath = (`${miscPath}/${file}`);
+	const command = require(filePath);
+	commands.push(command.data.toJSON());
+}
+for (const file of moderationFiles) {
+	const filePath = (`${moderationPath}/${file}`);
+	const command = require(filePath);
+	commands.push(command.data.toJSON());
+}
+for (const file of musicFiles) {
+	const filePath = (`${musicPath}/${file}`);
+	const command = require(filePath);
+	commands.push(command.data.toJSON());
+}
+for (const file of generalFiles) {
+	const filePath = (`${generalPath}/${file}`);
 	const command = require(filePath);
 	commands.push(command.data.toJSON());
 }

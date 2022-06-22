@@ -29,27 +29,34 @@ const { ConsoleMessage } = require('puppeteer');
 global.player = new Player(client)
 //Command stuff, gonna be honest, hardly know how this works.
 client.commands = new Discord.Collection();
-const miscPath = './commands'
-const miscFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
-const moderationPath = './commands'
-const moderationFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
-const musicPath = './commands'
-const musicFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+const miscPath = './misc'
+const miscFiles = fs.readdirSync(miscPath).filter(file => file.endsWith('.js'));
+const moderationPath = './moderation'
+const moderationFiles = fs.readdirSync(moderationPath).filter(file => file.endsWith('.js'));
+const musicPath = './music'
+const musicFiles = fs.readdirSync(musicPath).filter(file => file.endsWith('.js'));
+const generalPath = './general'
+const generalFiles = fs.readdirSync(generalPath).filter(file => file.endsWith('.js'));
 
 
 for (var file of miscFiles) {
 	var filePath = (`${miscPath}/${file}`);
-	var command = require(miscPath);
+	var command = require(filePath);
+	client.commands.set(command.data.name, command);
+}
+for (var file of generalFiles) {
+	var filePath = (`${generalPath}/${file}`);
+	var command = require(filePath);
 	client.commands.set(command.data.name, command);
 }
 for (var file of moderationFiles) {
 	var filePath = (`${moderationPath}/${file}`);
-	var command = require(moderationPath);
+	var command = require(filePath);
 	client.commands.set(command.data.name, command);
 }
 for (var file of musicFiles) {
 	var filePath = (`${musicPath}/${file}`);
-	var command = require(musicPath);
+	var command = require(filePath);
 	client.commands.set(command.data.name, command);
 }
 //Logs handling
