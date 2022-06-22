@@ -11,6 +11,17 @@ global.client = new Discord.Client({
   intents: new Discord.Intents(32767)
 });
 
+const Dashboard = require("discord-easy-dashboard");
+
+// Initialise it
+const dashboard = new Dashboard(client, {
+  name: 'Actias',
+  secret: `${config.secret}`,
+  theme: "dark"
+})
+
+// We now have a dashboard property to access everywhere!
+
 client.discordTogether = new DiscordTogether(client);
 
 const { Player } = require("discord-player");
@@ -18,12 +29,27 @@ const { ConsoleMessage } = require('puppeteer');
 global.player = new Player(client)
 //Command stuff, gonna be honest, hardly know how this works.
 client.commands = new Discord.Collection();
-const commandsPath = './commands'
-const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+const miscPath = './commands'
+const miscFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+const moderationPath = './commands'
+const moderationFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+const musicPath = './commands'
+const musicFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
-for (var file of commandFiles) {
-	var filePath = (`${commandsPath}/${file}`);
-	var command = require(filePath);
+
+for (var file of miscFiles) {
+	var filePath = (`${miscPath}/${file}`);
+	var command = require(miscPath);
+	client.commands.set(command.data.name, command);
+}
+for (var file of moderationFiles) {
+	var filePath = (`${moderationPath}/${file}`);
+	var command = require(moderationPath);
+	client.commands.set(command.data.name, command);
+}
+for (var file of musicFiles) {
+	var filePath = (`${musicPath}/${file}`);
+	var command = require(musicPath);
 	client.commands.set(command.data.name, command);
 }
 //Logs handling
@@ -126,33 +152,6 @@ client.on("messageCreate", async message => {
     console.log(error)
   }
 })
-client.on("messageCreate", async message => {
-  if (message.content === `!start`) {
-    if(message.member.voice.channel) {
-      client.discordTogether.createTogetherCode(message.member.voice.channel.id, 'youtube').then(async invite => {
-        return message.channel.send(`${invite.code}`);
-        });
-    };
-};
-})
-client.on("messageCreate", async message => {
-  if (message.content === `!start2`) {
-    if(message.member.voice.channel) {
-      client.discordTogether.createTogetherCode(message.member.voice.channel.id, 'doodlecrew').then(async invite => {
-        return message.channel.send(`${invite.code}`);
-    });
-    };
-};
-})
-client.on('messageCreate', async message => {
-  if (message.content === '!start3') {
-      if(message.member.voice.channel) {
-          client.discordTogether.createTogetherCode(message.member.voice.channel.id, 'sketchheads').then(async invite => {
-              return message.channel.send(`${invite.code}`);
-          });
-      };
-  };
-});
 player.on("trackStart", (queue, track) => {
   const playEmbed = new Discord.MessageEmbed({
     color: 3447003,
@@ -163,4 +162,5 @@ player.on("trackStart", (queue, track) => {
     embeds: [playEmbed]
   })
 })
+client.dashboard = dashboard;
 client.login(config.token);

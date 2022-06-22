@@ -7,20 +7,20 @@ module.exports = {
         if(message.content.includes("https://")) return
   if(message.author.bot) return
   const index = message.content.split(/[0-9]/);
-  var afterNumber = new String(index[1])
+  var afterNumber = new String(index[1]).toLowerCase()
   var timeInt = message.content.replace( /[^\d.]/g, '' )
   var hours = timeInt.substring(0, 1)
   var minutes = 0
   if(afterNumber == ":") {
     var hours = timeInt.substring(0, 1)
     var minutes = timeInt.substring(1, 3)
-    var afterNumber = new String(index[3])
+    var afterNumber = new String(index[3]).toLowerCase()
   }
   if(afterNumber == "") {
     var hours = timeInt.substring(0, 1 + 1, 2)
-    var afterNumber = new String(index[2])
+    var afterNumber = new String(index[2]).toLowerCase()
     if(afterNumber == ":") {
-      var afterNumber = new String(index[4])
+      var afterNumber = new String(index[4]).toLowerCase
       var minutes = timeInt.substring(2, 4)
     }
   }  
@@ -31,13 +31,13 @@ module.exports = {
     time.setHours(hours)
     time.setMinutes(minutes)
     var suffix = time.getHours() >= 12 ? "PM":"AM";
-    if(afterNumber.toLowerCase().includes("am")) {
+    if(afterNumber.includes("am")) {
       if(suffix != "AM") {
         var suffix = "AM"
       time.setHours(time.getHours() + 12)
       }
     }
-    if(afterNumber.toLowerCase().includes("pm")) {
+    if(afterNumber.includes("pm")) {
       if(suffix != "PM") {
         var suffix = "PM"
       time.setHours(time.getHours() + 12)
