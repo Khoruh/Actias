@@ -6,6 +6,7 @@ const client = new Discord.Client({
 module.exports = {
   name: 'messageDelete',
     async execute(message) {
+      if(message.author.bot) return
         //Get Channel For Logging, replace with config file at later date?    
         var guildConfig = (`./guildConfig/${message.guild.id}/settings.json`)
                 readFile = fs.readFileSync(guildConfig)
