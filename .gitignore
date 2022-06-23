@@ -4,4 +4,5 @@ guildConfig/
 node_modules/
 configFiles/
 valorantUsers/
+userConfig/
 ffmpeg.exe
